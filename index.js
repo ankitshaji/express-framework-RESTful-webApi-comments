@@ -22,7 +22,7 @@ app.set("views", path.join(__dirname, "/views"));
 
 //fake database server with /resource
 //array of objects
-const comments = [
+let comments = [
   { id: uuid4(), username: "Todd", comment: "lol that is so funny" },
   {
     id: uuid4(),
@@ -128,4 +128,19 @@ app.get("/comments/:id?/edit", (req, res) => {
   res.render("comments/edit", { comment: foundComment }); //(ejs filePath,variable sent to ejs)
   //render() - executes js - converts  ejs file into pure html
   //render() - converts jsObject to (http structure)response //content-type:text/html
+});
+
+//httpMethod=delete,path/resource-/comments/:id  -(pattern match) //:id is a path variable
+//(DELETE) name-destroy,purpose-delete single specific comment from DB server
+//convert (http structured) request to req jsObject + create res jsObject
+app.delete("/comments/:id", (req, res) => {
+  //object keys to variable - Object destructuring
+  const { id } = req.params; //pathVariablesObject
+  //settings comments to newArray //array.method(callback)-
+  comments = comments.filter((c) => c.id !== id); //each item passed in as arugment into callback and exectued ,if implicite return is true then add element to newArray
+  //fix for page refresh sending duplicate http structured delete request -
+  res.redirect("/comments");
+  //console.dir(res._header); //res.statusCode set to 302-found ie redirect //res.location set to /comments
+  //converts and sends jsObject as (http structure)response //default content-type:text/html
+  //browser sees (http structured) response with headers and makes a (http structured) get request to location ie default(get)/comments
 });

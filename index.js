@@ -3,11 +3,16 @@ const express = require("express"); //FunctionObject //express module
 const path = require("path"); //pathObject //path module
 const app = express(); //AppObject
 //key becomes variable + rename variable - object destructuring
-const { v4: uuid4 } = require("uuid"); //uuidObject //uuid module
+const { v4: uuid4 } = require("uuid"); //functionObject //uuid module
+const methodOverride = require("method-override"); //functionObject //method-override module
+
+//middlewareFunction() - override req.method from eg.post to value of _method key eg.PATCH
+//?queryString - (?key=value) therefore _method is key, we set value to it in html form
+app.use(methodOverride("_method")); //execute when any httpMethod/any httpStructured request arrives
 
 //form data middlewareMethod - http structured post request body parsed to req.body
 //http structure post request could be from browser form or postman
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); //execute when any httpMethod/any httpStructured request arrives
 
 //when view engine is used express assumes our views ie ejs templates
 //exist in a (default)views directory
@@ -106,4 +111,21 @@ app.patch("/comments/:id", (req, res) => {
   //console.dir(res._header); //res.statusCode set to 302-found ie redirect //res.location set to /comments
   //converts and sends jsObject as (http structure)response //default content-type:text/html
   //browser sees (http structured) response with headers and makes a (http structured) get request to location ie default(get)/comments
+});
+
+//httpMethod=get,path/resource-/comments/:id/edit  -(pattern match) //:id is a path variable
+//(READ) name-edit,purpose-display form to edit specfic existing comment in /comments(/resource) in fake db server
+//convert (http structured) request to req jsObject + create res jsObject
+app.get("/comments/:id?/edit", (req, res) => {
+  //object keys to variable - Object destructuring
+  const { id } = req.params; //pathVariablesObject
+  //find comment with id in comments(array of objects) -fake db server /resource
+  //array.method(callback)-each items passed in as argument into callback and executed ,returns first item that matches
+  const foundComment = comments.find(
+    (c) => c.id === id //implicit return
+  );
+  //passing in foundComment to prepoppulate form
+  res.render("comments/edit", { comment: foundComment }); //(ejs filePath,variable sent to ejs)
+  //render() - executes js - converts  ejs file into pure html
+  //render() - converts jsObject to (http structure)response //content-type:text/html
 });

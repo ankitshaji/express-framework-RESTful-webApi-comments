@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit</title>
+  </head>
+  <body>
+    <h1>Edit</h1>
+    <!--browser forms data http structured requests only have post and get methods-->
+    <!--using method-override npm package - middlewareFunction("key") -->
+    <!--when http strucuted post request arrives it changes the req.method from post to patch-->
+    <!--adding ?queryString to /resource/:id/?key=value-->
+    <!--we set value for key (_method) with alternative to post ie.PATCH-->
+    <form action="/comments/<%= comment.id %>?_method=PATCH" method="POST">
+      <textarea name="comment" id="comment" cols="30" rows="5">
+            <%=comment.comment%></textarea
+      >
+      <button>Save</button>
+    </form>
+    <a href="/comments">Back to Index</a>
+  </body>
+</html>

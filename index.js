@@ -85,3 +85,25 @@ app.get("/comments/:id", (req, res) => {
   //render() - executes js - converts  ejs file into pure html
   //render() - converts jsObject to (http structure)response //content-type:text/html
 });
+
+//httpMethod=patch,path/resource-/comments/:id  -(pattern match) //:id is a path variable
+//(UPDATE) name-update,purpose-partial-update single specific comment on DB server
+//http structured request body contains data - middleware parses to req.body
+//convert (http structured) request to req jsObject + create res jsObject
+app.patch("/comments/:id", (req, res) => {
+  //object keys to variable - Object destructuring
+  const { id } = req.params; //pathVariablesObject
+  //object keys to variable + renaming- Object destructuring
+  const { comment: newCommentText } = req.body; //{key/name:inputValue,key/name:inputValue}
+  //find comment with id in comments(array of objects) -fake db server /resource
+  //array.method(callback)-each items passed in as argument into callback and executed ,returns first item that matches
+  const foundComment = comments.find(
+    (c) => c.id === id //implicit return
+  );
+  foundComment.comment = newCommentText; //partial-updating specific item/object in fake db server /resource ie (array of objects)
+  //fix for page refresh sending duplicate http structured patch request -
+  res.redirect("/comments");
+  //console.dir(res._header); //res.statusCode set to 302-found ie redirect //res.location set to /comments
+  //converts and sends jsObject as (http structure)response //default content-type:text/html
+  //browser sees (http structured) response with headers and makes a (http structured) get request to location ie default(get)/comments
+});

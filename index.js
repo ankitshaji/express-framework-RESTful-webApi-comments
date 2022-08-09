@@ -16,22 +16,14 @@ app.set("views", path.join(__dirname, "/views"));
 //fake database server with /resource
 //array of objects
 const comments = [
+  { id: 1, username: "Todd", comment: "lol that is so funny" },
   {
-    username: "Todd",
-    comment: "lol that is so funny",
-  },
-  {
+    id: 2,
     username: "Skyler",
     comment: "I like to go bird watching with my dog",
   },
-  {
-    username: "Sk8rboi",
-    comment: "Plz delete your account,Todd",
-  },
-  {
-    username: "onlysaywoof",
-    comment: "woof woof woof",
-  },
+  { id: 3, username: "Sk8rboi", comment: "Plz delete your account,Todd" },
+  { id: 4, username: "onlysaywoof", comment: "woof woof woof" },
 ];
 
 //adddress - localhost:3000
@@ -74,4 +66,20 @@ app.post("/comments", (req, res) => {
   //console.dir(res._header); //res.statusCode set to 302-found ie redirect //res.location set to /comments
   //converts and sends jsObject as (http structure)response //default content-type:text/html
   //browser sees (http structured) response with headers and makes a (http structured) get request to location ie default(get)/comments
+});
+
+//httpMethod=get,path/resource-/comments/:id  -(pattern match) //:id is a path variable
+//(READ) name-show,purpose-display single specific comment from DB server
+//convert (http structured) request to req jsObject + create res jsObject
+app.get("/comments/:id", (req, res) => {
+  //object keys to variable - Object destructuring
+  const { id } = req.params; //pathVariablesObject
+  //find comment with id in comments(array of objects)
+  //array.method(callback)-each items passed in as argument into callback and executed ,returns first item that matches
+  const comment = comments.find(
+    (c) => c.id === parseInt(id) //globalObject.method() //implicit return
+  );
+  res.render("comments/show", { comment: comment }); //(ejs filePath,variable sent to ejs)
+  //render() - executes js - converts  ejs file into pure html
+  //render() - converts jsObject to (http structure)response //content-type:text/html
 });

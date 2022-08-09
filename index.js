@@ -2,6 +2,8 @@
 const express = require("express"); //FunctionObject //express module
 const path = require("path"); //pathObject //path module
 const app = express(); //AppObject
+//key becomes variable + rename variable - object destructuring
+const { v4: uuid4 } = require("uuid"); //uuidObject //uuid module
 
 //form data middlewareMethod - http structured post request body parsed to req.body
 //http structure post request could be from browser form or postman
@@ -16,14 +18,14 @@ app.set("views", path.join(__dirname, "/views"));
 //fake database server with /resource
 //array of objects
 const comments = [
-  { id: 1, username: "Todd", comment: "lol that is so funny" },
+  { id: uuid4(), username: "Todd", comment: "lol that is so funny" },
   {
-    id: 2,
+    id: uuid4(),
     username: "Skyler",
     comment: "I like to go bird watching with my dog",
   },
-  { id: 3, username: "Sk8rboi", comment: "Plz delete your account,Todd" },
-  { id: 4, username: "onlysaywoof", comment: "woof woof woof" },
+  { id: uuid4(), username: "Sk8rboi", comment: "Plz delete your account,Todd" },
+  { id: uuid4(), username: "onlysaywoof", comment: "woof woof woof" },
 ];
 
 //adddress - localhost:3000
@@ -60,7 +62,7 @@ app.get("/comments/new", (req, res) => {
 app.post("/comments", (req, res) => {
   //object keys to variable - Object destructuring
   const { username, comment } = req.body; //{key/name:inputValue,key/name:inputValue}
-  comments.push({ username: username, comment: comment }); //adding to end of array of objects ie Fake Database
+  comments.push({ username: username, comment: comment, id: uuid4() }); //adding to end of array of objects ie Fake Database
   //fix for page refresh sending duplicate http structured post request -
   res.redirect("/comments");
   //console.dir(res._header); //res.statusCode set to 302-found ie redirect //res.location set to /comments
@@ -77,7 +79,7 @@ app.get("/comments/:id", (req, res) => {
   //find comment with id in comments(array of objects)
   //array.method(callback)-each items passed in as argument into callback and executed ,returns first item that matches
   const comment = comments.find(
-    (c) => c.id === parseInt(id) //globalObject.method() //implicit return
+    (c) => c.id === id //implicit return
   );
   res.render("comments/show", { comment: comment }); //(ejs filePath,variable sent to ejs)
   //render() - executes js - converts  ejs file into pure html

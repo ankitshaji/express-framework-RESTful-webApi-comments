@@ -51,7 +51,7 @@ app.get("/comments", (req, res) => {
   //render() - converts jsObject to (http structure)response //content-type:text/html
 });
 
-//(http stuctured) get request to form paths - http structured response is pure html converted from form ejs file
+//(http stuctured) get request to form path - http structured response is pure html converted from form ejs file
 //httpMethod=get,path/resource-/comments/new  -(direct match/exact path)
 //(READ) name-new,purpose-display form to submit new comment
 //convert (http structured) request to req jsObject + create res jsObject
@@ -114,7 +114,7 @@ app.patch("/comments/:id", (req, res) => {
   //browser sees (http structured) response with headers and makes a (http structured) get request to location ie default(get)/comments
 });
 
-//(http stuctured) get request to form paths - http structured response is pure html converted from form ejs file
+//(http stuctured) get request to form path - http structured response is pure html converted from form ejs file
 //httpMethod=get,path/resource-/comments/:id/edit  -(pattern match) //:id is a path variable
 //(READ) name-edit,purpose-display form to edit specfic existing comment in /comments(/resource) in fake db server
 //convert (http structured) request to req jsObject + create res jsObject

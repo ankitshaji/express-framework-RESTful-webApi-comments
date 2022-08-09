@@ -69,5 +69,9 @@ app.post("/comments", (req, res) => {
   //object keys to variable - Object destructuring
   const { username, comment } = req.body; //{key/name:inputValue,key/name:inputValue}
   comments.push({ username: username, comment: comment }); //adding to end of array of objects ie Fake Database
-  res.send("New form data added to fake database"); //send() - converts jsObject to (http structure)response //content-type:text/plain
+  //fix for page refresh sending duplicate http structured post request -
+  res.redirect("/comments");
+  //console.dir(res._header); //res.statusCode set to 302-found ie redirect //res.location set to /comments
+  //converts and sends jsObject as (http structure)response //default content-type:text/html
+  //browser sees (http structured) response with headers and makes a (http structured) get request to location ie default(get)/comments
 });
